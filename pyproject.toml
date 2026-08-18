@@ -1,0 +1,174 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "es-tools"
+dynamic = ["version"]
+description = "Unified Elasticsearch tools package"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.11"
+authors = [
+    {name = "Aaron Mildenstein", email = "aaron@mildensteins.com"},
+]
+maintainers = [
+    {name = "Aaron Mildenstein", email = "aaron@mildensteins.com"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "elasticsearch9>=9.0.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0",
+    "tiered_debug>=1.5.1",
+]
+
+[project.optional-dependencies]
+cli = [
+    "click>=8.0.0",
+]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "ruff>=0.8",
+    "basedpyright",
+    "click>=8.0.0",
+]
+
+[tool.hatch.version]
+path = 'src/es_tools/__init__.py'
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/es_tools"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/es_tools", "pyproject.toml", "README.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+pythonpath = ["src"]
+markers = [
+    "docker: requires a local Docker daemon and pulls Elasticsearch 9.5",
+]
+
+[tool.coverage.run]
+source = ["src/es_tools"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.ruff]
+target-version = "py311"
+
+# Set the maximum line length (88 matches Black's default)
+line-length = 88
+
+# Directory exclusions
+exclude = [
+    ".git",
+    ".ruff_cache",
+    ".venv",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+# Rules to enable (E/F are Ruff's defaults, I enables isort-like import sorting)
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "B",   # flake8-bugbear (common bugs)
+    "UP",  # pyupgrade (upgrades syntax to newer Python versions)
+    "RUF", # Ruff-specific rules
+]
+
+# Rules to explicitly ignore
+ignore = [
+    "E501", # Line too long (let the formatter handle this)
+]
+
+# Allow unused imports in __init__.py files
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401", "RUF022"]
+
+[tool.ruff.format]
+# Configure the formatter to use spaces instead of tabs
+indent-style = "space"
+
+# Use double quotes for strings (like Black)
+quote-style = "double"
+
+[tool.pylsp]
+configurationSources = ["pyproject.toml"]
+
+[tool.pylsp.plugins.jedi]
+extra_paths = ["src"]
+
+# Disable legacy default linters to avoid conflicting warnings
+[tool.pylsp.plugins.pycodestyle]
+enabled = false
+
+[tool.pylsp.plugins.pyflakes]
+enabled = false
+
+[tool.pylsp.plugins.mccabe]
+enabled = true
+
+[tool.pylsp.plugins.ruff]
+enabled = true
+formatEnabled = true
+
+[tool.basedpyright]
+# Target runtime environment
+pythonVersion = "3.11"
+pythonPlatform = "Linux"
+
+# Paths to check or ignore
+include = ["src", "tests"]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__"
+]
+
+# Environment discovery
+venvPath = "."
+venv = ".venv"
+
+# Type Checking Intensity
+# Options: "off", "basic", "standard", "strict", or "recommended" (default)
+typeCheckingMode = "recommended"
+failOnWarnings = false
+
+# Strict Rule Overrides (Choose: "none", "information", "warning", or "error")
+reportUnusedImport = "error"
+reportUnusedVariable = "warning"
+reportMissingTypeStubs = "none"
+
+# unique basedpyright feature adjustments
+# Options: "error", "warning", "information", or "none"
+reportAny = false
+reportExplicitAny = false
+reportImplicitStringConcatenation = false
