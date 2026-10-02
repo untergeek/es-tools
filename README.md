@@ -141,7 +141,7 @@ client = docker.get_client()
 
 ```python
 from es_tools.utils import (
-    ensure_list, get_version,
+    chunk_names, ensure_list, get_version,
     log_exception, pluralize, redact, to_bool, to_int, to_str,
     ConfigManager, load_config, save_config
 )
