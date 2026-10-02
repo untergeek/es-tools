@@ -109,6 +109,12 @@ from es_tools.redact import RedactIlm
 RedactIlm(client, EventBus(), "es-checkpoint").run(source_index, mounted_index)
 ```
 
+`es_tools.redact` exports `RedactFields`.
+
+### Cluster (`es_tools.cluster`)
+
+`es_tools.cluster` exports `SetClusterRouting`.
+
 ### Select (`es_tools.select`)
 
 ```python
@@ -135,11 +141,13 @@ client = docker.get_client()
 
 ```python
 from es_tools.utils import (
-    ensure_list, file_exists, get_version, is_truthy,
-    log_exception, pluralize, redact, to_bool, to_int, to_list, to_str,
+    ensure_list, get_version,
+    log_exception, pluralize, redact, to_bool, to_int, to_str,
     ConfigManager, load_config, save_config
 )
 ```
+
+`get_version()` works only when the `es-tools` distribution is installed.
 
 ## Testing
 
