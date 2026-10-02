@@ -63,7 +63,7 @@ def get_copyright_years() -> str:
         return f"{FIRST_YEAR}"
     return f"{FIRST_YEAR}-{now.year}"
 
-__version__ = "1.0.0"
+__version__ = "0.1.0"
 __author__ = "Aaron Mildenstein"
 __copyright__ = f"{get_copyright_years()}, {__author__}"
 __license__ = "Apache 2.0"
